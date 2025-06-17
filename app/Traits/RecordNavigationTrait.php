@@ -34,8 +34,12 @@ trait RecordNavigationTrait
     protected function configureNextAction(Action $action): void
     {
         if ($this->getNextRecord()) {
+
+            dd($this->getRecord());
             $action->url(fn(): string => static::getResource()::getUrl(static::getResourcePageName(), ['record' => $this->getNextRecord()]));
         } else {
+
+            dd($this->getRecord());
             $action
                 ->disabled()
                 ->color('gray');
@@ -44,11 +48,13 @@ trait RecordNavigationTrait
 
     protected function getPreviousRecord(): ?Model
     {
-        return $this
-            ->getRecord()
-            ->where('id', '<', $this->getRecord()->id)
-            ->orderBy('id', 'desc')
-            ->first();
+        return dd($this->getRecord());
+
+        // $this
+        //     ->getRecord()
+        //     ->where('id', '<', $this->getRecord()->id)
+        //     ->orderBy('id', 'desc')
+        //     ->first();
     }
 
     protected function getNextRecord(): ?Model

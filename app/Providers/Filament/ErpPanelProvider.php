@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Auth\Login;
+use Filament\Auth\MultiFactor\App\AppAuthentication;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -32,10 +33,15 @@ class ErpPanelProvider extends PanelProvider
             ->id('erp')
             ->path('erp')
             ->login(Login::class)
+            ->profile()
+            ->multiFactorAuthentication([
+                AppAuthentication::make(),
+            ])
             ->colors([
                 'primary' => Color::Indigo,
             ])
             ->font('Assistant')
+            ->favicon(asset('logo.svg'))
             ->sidebarCollapsibleOnDesktop()
             ->unsavedChangesAlerts()
             ->databaseNotifications()

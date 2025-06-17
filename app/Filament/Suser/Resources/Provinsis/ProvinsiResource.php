@@ -1,0 +1,66 @@
+<?php
+
+namespace App\Filament\Suser\Resources\Provinsis;
+
+use App\Filament\Suser\Resources\Provinsis\Pages\CreateProvinsi;
+use App\Filament\Suser\Resources\Provinsis\Pages\EditProvinsi;
+use App\Filament\Suser\Resources\Provinsis\Pages\ListProvinsis;
+use App\Filament\Suser\Resources\Provinsis\Pages\ViewProvinsi;
+use App\Filament\Suser\Resources\Provinsis\Schemas\ProvinsiForm;
+use App\Filament\Suser\Resources\Provinsis\Schemas\ProvinsiInfolist;
+use App\Filament\Suser\Resources\Provinsis\Tables\ProvinsisTable;
+use App\Models\Provinsi;
+use BackedEnum;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+
+class ProvinsiResource extends Resource
+{
+    protected static ?string $model = Provinsi::class;
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+
+    public static function form(Schema $schema): Schema
+    {
+        return ProvinsiForm::configure($schema);
+    }
+
+    public static function infolist(Schema $schema): Schema
+    {
+        return ProvinsiInfolist::configure($schema);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return ProvinsisTable::configure($table);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => ListProvinsis::route('/'),
+            'create' => CreateProvinsi::route('/create'),
+            'view' => ViewProvinsi::route('/{record}'),
+            'edit' => EditProvinsi::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
+    }
+}
