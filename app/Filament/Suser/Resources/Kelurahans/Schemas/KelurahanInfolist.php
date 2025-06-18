@@ -4,6 +4,8 @@ namespace App\Filament\Suser\Resources\Kelurahans\Schemas;
 
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 class KelurahanInfolist
@@ -12,22 +14,55 @@ class KelurahanInfolist
     {
         return $schema
             ->components([
-                TextEntry::make('name'),
-                TextEntry::make('kecamatan_id')
-                    ->numeric(),
-                TextEntry::make('ulid'),
-                TextEntry::make('record_title'),
-                TextEntry::make('con'),
-                IconEntry::make('is_active')
-                    ->boolean(),
-                TextEntry::make('created_by'),
-                TextEntry::make('updated_by'),
-                TextEntry::make('created_at')
-                    ->dateTime(),
-                TextEntry::make('updated_at')
-                    ->dateTime(),
-                TextEntry::make('deleted_at')
-                    ->dateTime(),
-            ]);
+
+                Section::make('Kelurahan')
+                    ->schema([
+
+                        Grid::make(4)
+                            ->schema([
+
+                                TextEntry::make('name')
+                                    ->label('Name'),
+
+                            ]),
+
+                        Grid::make(4)
+                            ->schema([
+
+                                TextEntry::make('description')
+                                    ->label('Description'),
+                            ]),
+
+                    ])
+                    ->compact(),
+
+                Section::make('Kecamatan')
+                    ->schema([
+
+                        Grid::make(4)
+                            ->schema([
+
+                                TextEntry::make('kecamatan.description')
+                                    ->label('Kecamatan'),
+
+                            ]),
+
+                    ])
+                    ->compact(),
+
+                Section::make('Status')
+                    ->schema([
+
+                        Grid::make(4)
+                            ->schema([
+
+                                IconEntry::make('is_active')
+                                    ->label('Active?')
+                                    ->boolean(),
+
+                            ]),
+                    ])->collapsible()
+                    ->compact(),
+            ])->columns(1);
     }
 }

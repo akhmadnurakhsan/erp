@@ -2,9 +2,16 @@
 
 namespace App\Filament\Suser\Resources\Kabupatens\Schemas;
 
+use App\Models\Kabupaten;
+use App\Models\Provinsi;
+use Filament\Forms\Components\Radio;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\ToggleButtons;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 class KabupatenForm
@@ -13,17 +20,64 @@ class KabupatenForm
     {
         return $schema
             ->components([
-                TextInput::make('name'),
-                Textarea::make('description')
-                    ->columnSpanFull(),
-                TextInput::make('provinsi_id')
-                    ->numeric(),
-                TextInput::make('ulid'),
-                TextInput::make('record_title'),
-                TextInput::make('con'),
-                Toggle::make('is_active'),
-                TextInput::make('created_by'),
-                TextInput::make('updated_by'),
-            ]);
+
+                Section::make('Kabupaten')
+                    ->schema([
+
+                        Grid::make(4)
+                            ->schema([
+
+                                TextInput::make('name')
+                                    ->label('Name')
+                                    ->required()
+                                    ->unique(Kabupaten::class, ignoreRecord: true),
+
+                            ]),
+
+                        Grid::make(4)
+                            ->schema([
+
+                                TextInput::make('description')
+                                    ->label('Description')
+                                    ->required(),
+                            ]),
+
+                    ])
+                    ->compact(),
+
+                Section::make('Provinsi')
+                    ->schema([
+
+                        Grid::make(4)
+                            ->schema([
+
+                                Select::make('provinsi_id')
+                                    ->label('Provinsi')
+                                    ->required()
+                                    ->native(false)
+                                    ->options(Provinsi::pluck('description', 'id'))
+                                    ->searchable(),
+
+                            ]),
+
+                    ])
+                    ->compact(),
+
+                Section::make('Status')
+                    ->schema([
+
+                        Grid::make(4)
+                            ->schema([
+
+                                Radio::make('is_active')
+                                    ->label('Active?')
+                                    ->boolean()
+                                    ->inline()
+                                    ->default(true),
+
+                            ]),
+                    ])->collapsible()
+                    ->compact(),
+            ])->columns(1);
     }
 }

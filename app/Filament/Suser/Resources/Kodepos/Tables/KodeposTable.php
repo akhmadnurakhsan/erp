@@ -2,14 +2,24 @@
 
 namespace App\Filament\Suser\Resources\Kodepos\Tables;
 
+use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\ForceDeleteBulkAction;
+use Filament\Actions\RestoreAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
+use Filament\Tables\Columns\CheckboxColumn;
+use Filament\Tables\Columns\ColumnGroup;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\QueryBuilder;
+use Filament\Tables\Filters\QueryBuilder\Constraints\BooleanConstraint;
+use Filament\Tables\Filters\QueryBuilder\Constraints\DateConstraint;
+use Filament\Tables\Filters\QueryBuilder\Constraints\TextConstraint;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 
@@ -18,57 +28,138 @@ class KodeposTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->searchOnBlur()
             ->columns([
-                TextColumn::make('name')
-                    ->searchable(),
-                TextColumn::make('country_id')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('provinsi_id')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('kabupaten_id')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('kecamatan_id')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('kelurahan_id')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('kodepos')
-                    ->searchable(),
-                TextColumn::make('ulid')
-                    ->searchable(),
-                TextColumn::make('record_title')
-                    ->searchable(),
-                TextColumn::make('con')
-                    ->searchable(),
-                IconColumn::make('is_active')
-                    ->boolean(),
-                TextColumn::make('created_by')
-                    ->searchable(),
-                TextColumn::make('updated_by')
-                    ->searchable(),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+
+                ColumnGroup::make('Kodepos', [
+
+                    TextColumn::make('name')
+                        ->label('Name')
+                        ->searchable(isIndividual: true, isGlobal: false)
+                        ->sortable(),
+
+                    TextColumn::make('description')
+                        ->label('Description')
+                        ->searchable(isIndividual: true, isGlobal: false)
+                        ->sortable(),
+
+                    TextColumn::make('kodepos')
+                        ->label('Kodepos')
+                        ->searchable(isIndividual: true, isGlobal: false)
+                        ->sortable(),
+
+                ]),
+
+                ColumnGroup::make('Data Wilayah', [
+
+                    TextColumn::make('country.description')
+                        ->label('Country')
+                        ->searchable(isIndividual: true, isGlobal: false)
+                        ->sortable(),
+
+                    TextColumn::make('provinsi.description')
+                        ->label('Provinsi')
+                        ->searchable(isIndividual: true, isGlobal: false)
+                        ->sortable(),
+
+                    TextColumn::make('kabupaten.description')
+                        ->label('Kabupaten')
+                        ->searchable(isIndividual: true, isGlobal: false)
+                        ->sortable(),
+
+                    TextColumn::make('kecamatan.description')
+                        ->label('Kecamatan')
+                        ->searchable(isIndividual: true, isGlobal: false)
+                        ->sortable(),
+
+                    TextColumn::make('kelurahan.description')
+                        ->label('Kelurahan')
+                        ->searchable(isIndividual: true, isGlobal: false)
+                        ->sortable(),
+
+                ]),
+
+                ColumnGroup::make('Status', [
+
+                    CheckboxColumn::make('is_active')
+                        ->label('Status')
+                        ->alignCenter()
+                        ->sortable(),
+
+                ]),
+
+                ColumnGroup::make('Logs', [
+
+                    TextColumn::make('created_by')
+                        ->label('Created by')
+                        ->sortable(),
+
+                    TextColumn::make('updated_by')
+                        ->label('Updated by')
+                        ->sortable(),
+
+                    TextColumn::make('created_at')
+                        ->dateTime()
+                        ->sortable()
+                        ->toggleable(isToggledHiddenByDefault: true),
+
+                    TextColumn::make('updated_at')
+                        ->dateTime()
+                        ->sortable()
+                        ->toggleable(isToggledHiddenByDefault: true),
+
+                ]),
             ])
             ->filters([
+
                 TrashedFilter::make(),
+
+                QueryBuilder::make()
+                    ->constraintPickerColumns(1)
+                    ->constraints([
+
+                        TextConstraint::make('name')
+                            ->label('Name')
+                            ->nullable(),
+
+                        TextConstraint::make('description')
+                            ->label('Description')
+                            ->nullable(),
+
+                        BooleanConstraint::make('is_active')
+                            ->label('Status')
+                            ->icon(false)
+                            ->nullable(),
+
+                        TextConstraint::make('created_by')
+                            ->label('Created by')
+                            ->icon(false)
+                            ->nullable(),
+
+                        TextConstraint::make('updated_by')
+                            ->label('Updated by')
+                            ->icon(false)
+                            ->nullable(),
+
+                        DateConstraint::make('created_at')
+                            ->icon(false)
+                            ->nullable(),
+
+                        DateConstraint::make('updated_at')
+                            ->icon(false)
+                            ->nullable(),
+
+                    ]),
             ])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
+                ActionGroup::make([
+                    ViewAction::make(),
+                    EditAction::make(),
+                    DeleteAction::make(),
+                    ForceDeleteAction::make(),
+                    RestoreAction::make(),
+                ]),
+
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
@@ -76,6 +167,11 @@ class KodeposTable
                     ForceDeleteBulkAction::make(),
                     RestoreBulkAction::make(),
                 ]),
+
+                // ExportBulkAction::make()
+                //     ->label('Export')
+                //     ->exporter(UserExporter::class),
+
             ]);
     }
 }

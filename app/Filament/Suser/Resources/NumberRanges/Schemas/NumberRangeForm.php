@@ -117,8 +117,7 @@ class NumberRangeForm
 
                                 TextInput::make('current_number')
                                     ->label('Current Number')
-                                    ->regex('/[^0-9]/') // Allow only numbers
-                                    ->required()
+                                    ->regex('/[^0-9]/')
                                     ->maxLength(10),
 
                             ]),

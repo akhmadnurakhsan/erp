@@ -2,9 +2,20 @@
 
 namespace App\Filament\Suser\Resources\Kodepos\Schemas;
 
+use App\Models\Country;
+use App\Models\Kabupaten;
+use App\Models\Kecamatan;
+use App\Models\Kelurahan;
+use App\Models\Kodepos;
+use App\Models\Provinsi;
+use Filament\Forms\Components\Radio;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\ToggleButtons;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 class KodeposForm
@@ -13,26 +24,120 @@ class KodeposForm
     {
         return $schema
             ->components([
-                TextInput::make('name'),
-                Textarea::make('description')
-                    ->columnSpanFull(),
-                TextInput::make('country_id')
-                    ->numeric(),
-                TextInput::make('provinsi_id')
-                    ->numeric(),
-                TextInput::make('kabupaten_id')
-                    ->numeric(),
-                TextInput::make('kecamatan_id')
-                    ->numeric(),
-                TextInput::make('kelurahan_id')
-                    ->numeric(),
-                TextInput::make('kodepos'),
-                TextInput::make('ulid'),
-                TextInput::make('record_title'),
-                TextInput::make('con'),
-                Toggle::make('is_active'),
-                TextInput::make('created_by'),
-                TextInput::make('updated_by'),
-            ]);
+
+                Section::make('Kodepos')
+                    ->schema([
+
+                        Grid::make(4)
+                            ->schema([
+
+                                TextInput::make('name')
+                                    ->label('Name')
+                                    ->required()
+                                    ->unique(Kodepos::class, ignoreRecord: true),
+
+                            ]),
+
+                        Grid::make(4)
+                            ->schema([
+
+                                TextInput::make('description')
+                                    ->label('Description')
+                                    ->required(),
+                            ]),
+
+                        Grid::make(4)
+                            ->schema([
+
+                                TextInput::make('kodepos')
+                                    ->label('Kodepos')
+                                    ->required(),
+                            ]),
+
+                    ])
+                    ->compact(),
+
+                Section::make('Data Wilayah')
+                    ->schema([
+
+                        Grid::make(4)
+                            ->schema([
+
+                                Select::make('country_id')
+                                    ->label('Country')
+                                    ->required()
+                                    ->native(false)
+                                    ->options(Country::pluck('description', 'id'))
+                                    ->searchable(),
+
+                            ]),
+
+                        Grid::make(4)
+                            ->schema([
+
+                                Select::make('provinsi_id')
+                                    ->label('Provinsi')
+                                    ->required()
+                                    ->native(false)
+                                    ->options(Provinsi::pluck('description', 'id'))
+                                    ->searchable(),
+
+                            ]),
+
+                        Grid::make(4)
+                            ->schema([
+
+                                Select::make('kabupaten_id')
+                                    ->label('Kabupaten')
+                                    ->required()
+                                    ->native(false)
+                                    ->options(Kabupaten::pluck('description', 'id'))
+                                    ->searchable(),
+
+                            ]),
+
+                        Grid::make(4)
+                            ->schema([
+
+                                Select::make('kecamatan_id')
+                                    ->label('Kecamatan')
+                                    ->required()
+                                    ->native(false)
+                                    ->options(Kecamatan::pluck('description', 'id'))
+                                    ->searchable(),
+
+                            ]),
+
+                        Grid::make(4)
+                            ->schema([
+
+                                Select::make('kelurahan_id')
+                                    ->label('Kelurahan')
+                                    ->required()
+                                    ->native(false)
+                                    ->options(Kelurahan::pluck('description', 'id'))
+                                    ->searchable(),
+
+                            ]),
+
+                    ])
+                    ->compact(),
+
+                Section::make('Status')
+                    ->schema([
+
+                        Grid::make(4)
+                            ->schema([
+
+                                Radio::make('is_active')
+                                    ->label('Active?')
+                                    ->boolean()
+                                    ->inline()
+                                    ->default(true),
+
+                            ]),
+                    ])->collapsible()
+                    ->compact(),
+            ])->columns(1);
     }
 }

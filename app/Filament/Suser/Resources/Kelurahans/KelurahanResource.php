@@ -17,6 +17,7 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use UnitEnum;
 
 class KelurahanResource extends Resource
 {
@@ -24,15 +25,31 @@ class KelurahanResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
+    protected static ?string $modelLabel = 'Kelurahan Data';
+
+    protected static ?string $pluralModelLabel = 'Kelurahan Data';
+
+    protected static ?string $navigationLabel = 'Kelurahan Data';
+
+    // protected static ?int $navigationSort = 990000020;
+
+    // protected static ?string $cluster = AdminClustersUser::class;
+
+    protected static string|UnitEnum|null $navigationGroup = 'Geographic Data';
+
+    // protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
+
+    protected static ?string $recordTitleAttribute = 'record_title';
+
     public static function form(Schema $schema): Schema
     {
         return KelurahanForm::configure($schema);
     }
 
-    public static function infolist(Schema $schema): Schema
-    {
-        return KelurahanInfolist::configure($schema);
-    }
+    // public static function infolist(Schema $schema): Schema
+    // {
+    //     return KelurahanInfolist::configure($schema);
+    // }
 
     public static function table(Table $table): Table
     {

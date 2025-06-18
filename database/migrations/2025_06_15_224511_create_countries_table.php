@@ -14,9 +14,9 @@ return new class extends Migration {
             $table->id();
             $table->string('name')->nullable();
             $table->text('description')->nullable();
-            $table->string('alpha_2', 2)->nullable();
-            $table->string('alpha_3', 3)->nullable();
-            $table->string('country_code', 3)->nullable();
+            $table->string('alpha_2')->nullable();
+            $table->string('alpha_3')->nullable();
+            $table->string('country_code')->nullable();
             $table->string('region')->nullable();
             $table->string('sub_region')->nullable();
             $table->string('intermediate_region')->nullable();
