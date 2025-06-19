@@ -2,6 +2,9 @@
 
 namespace App\Filament\Suser\Resources\Kodepos\Schemas;
 
+use App\Filament\Schemas\Forms\DescriptionInput;
+use App\Filament\Schemas\Forms\NameInput;
+use App\Filament\Schemas\Forms\StatusInput;
 use App\Models\Country;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
@@ -31,9 +34,7 @@ class KodeposForm
                         Grid::make(4)
                             ->schema([
 
-                                TextInput::make('name')
-                                    ->label('Name')
-                                    ->required()
+                                NameInput::make()
                                     ->unique(Kodepos::class, ignoreRecord: true),
 
                             ]),
@@ -41,9 +42,7 @@ class KodeposForm
                         Grid::make(4)
                             ->schema([
 
-                                TextInput::make('description')
-                                    ->label('Description')
-                                    ->required(),
+                                DescriptionInput::make()
                             ]),
 
                         Grid::make(4)
@@ -129,11 +128,7 @@ class KodeposForm
                         Grid::make(4)
                             ->schema([
 
-                                Radio::make('is_active')
-                                    ->label('Active?')
-                                    ->boolean()
-                                    ->inline()
-                                    ->default(true),
+                                StatusInput::make(),
 
                             ]),
                     ])->collapsible()

@@ -2,14 +2,12 @@
 
 namespace App\Filament\Suser\Resources\Kabupatens\Schemas;
 
+use App\Filament\Schemas\Forms\DescriptionInput;
+use App\Filament\Schemas\Forms\NameInput;
+use App\Filament\Schemas\Forms\StatusInput;
 use App\Models\Kabupaten;
 use App\Models\Provinsi;
-use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\Toggle;
-use Filament\Forms\Components\ToggleButtons;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -27,9 +25,7 @@ class KabupatenForm
                         Grid::make(4)
                             ->schema([
 
-                                TextInput::make('name')
-                                    ->label('Name')
-                                    ->required()
+                                NameInput::make()
                                     ->unique(Kabupaten::class, ignoreRecord: true),
 
                             ]),
@@ -37,9 +33,7 @@ class KabupatenForm
                         Grid::make(4)
                             ->schema([
 
-                                TextInput::make('description')
-                                    ->label('Description')
-                                    ->required(),
+                                DescriptionInput::make(),
                             ]),
 
                     ])
@@ -69,14 +63,10 @@ class KabupatenForm
                         Grid::make(4)
                             ->schema([
 
-                                Radio::make('is_active')
-                                    ->label('Active?')
-                                    ->boolean()
-                                    ->inline()
-                                    ->default(true),
+                                StatusInput::make(),
 
                             ]),
-                    ])->collapsible()
+                    ])
                     ->compact(),
             ])->columns(1);
     }

@@ -2,6 +2,8 @@
 
 namespace App\Filament\Suser\Resources\Users\Schemas;
 
+use App\Filament\Schemas\Forms\NameInput;
+use App\Filament\Schemas\Forms\StatusInput;
 use App\Models\PanelRole;
 use App\Models\User;
 use Filament\Actions\Action;
@@ -30,9 +32,7 @@ class UserForm
                         Grid::make(4)
                             ->schema([
 
-                                TextInput::make('name')
-                                    ->label('Name')
-                                    ->required(),
+                                NameInput::make(),
 
                             ]),
 
@@ -114,11 +114,7 @@ class UserForm
                         Grid::make(4)
                             ->schema([
 
-                                Radio::make('is_active')
-                                    ->label('Active?')
-                                    ->boolean()
-                                    ->inline()
-                                    ->default(true),
+                                StatusInput::make(),
 
                             ]),
                     ])->collapsible()

@@ -2,6 +2,12 @@
 
 namespace App\Filament\Suser\Resources\PanelRoles\Tables;
 
+use App\Filament\Schemas\Tables\Columns\LogsColumnGroup;
+use App\Filament\Schemas\Tables\Columns\NameColumnGroup;
+use App\Filament\Schemas\Tables\Columns\StatusColumnGroup;
+use App\Filament\Schemas\Tables\Filters\BasicQueryBuilderFilters;
+use App\Filament\Schemas\Tables\recordActions\BasicActionGrouprecordActions;
+use App\Filament\Schemas\Tables\toolbarActions\BasicBulkActionGrouptoolbarActions;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -31,108 +37,24 @@ class PanelRolesTable
             ->searchOnBlur()
             ->columns([
 
-                ColumnGroup::make('Name', [
+                NameColumnGroup::make(),
 
-                    TextColumn::make('name')
-                        ->label('Name')
-                        ->searchable(isIndividual: true, isGlobal: false)
-                        ->sortable(),
+                StatusColumnGroup::make(),
 
-                    TextColumn::make('description')
-                        ->label('Description')
-                        ->searchable(isIndividual: true, isGlobal: false)
-                        ->sortable(),
-
-                ]),
-
-                ColumnGroup::make('Status', [
-
-                    CheckboxColumn::make('is_active')
-                        ->label('Status')
-                        ->alignCenter()
-                        ->sortable(),
-
-                ]),
-
-                ColumnGroup::make('Logs', [
-
-                    TextColumn::make('created_by')
-                        ->label('Created by')
-                        ->sortable(),
-
-                    TextColumn::make('updated_by')
-                        ->label('Updated by')
-                        ->sortable(),
-
-                    TextColumn::make('created_at')
-                        ->dateTime()
-                        ->sortable()
-                        ->toggleable(isToggledHiddenByDefault: true),
-
-                    TextColumn::make('updated_at')
-                        ->dateTime()
-                        ->sortable()
-                        ->toggleable(isToggledHiddenByDefault: true),
-
-                ]),
+                LogsColumnGroup::make(),
             ])
             ->filters([
 
                 TrashedFilter::make(),
 
-                QueryBuilder::make()
-                    ->constraintPickerColumns(1)
-                    ->constraints([
-
-                        TextConstraint::make('name')
-                            ->label('Name')
-                            ->nullable(),
-
-                        TextConstraint::make('description')
-                            ->label('Description')
-                            ->nullable(),
-
-                        BooleanConstraint::make('is_active')
-                            ->label('Status')
-                            ->icon(false)
-                            ->nullable(),
-
-                        TextConstraint::make('created_by')
-                            ->label('Created by')
-                            ->icon(false)
-                            ->nullable(),
-
-                        TextConstraint::make('updated_by')
-                            ->label('Updated by')
-                            ->icon(false)
-                            ->nullable(),
-
-                        DateConstraint::make('created_at')
-                            ->icon(false)
-                            ->nullable(),
-
-                        DateConstraint::make('updated_at')
-                            ->icon(false)
-                            ->nullable(),
-
-                    ]),
+                BasicQueryBuilderFilters::make(),
             ])
             ->recordActions([
-                ActionGroup::make([
-                    ViewAction::make(),
-                    EditAction::make(),
-                    DeleteAction::make(),
-                    ForceDeleteAction::make(),
-                    RestoreAction::make(),
-                ]),
+                BasicActionGrouprecordActions::make(),
 
             ])
             ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                    ForceDeleteBulkAction::make(),
-                    RestoreBulkAction::make(),
-                ]),
+                BasicBulkActionGrouptoolbarActions::make(),
 
                 // ExportBulkAction::make()
                 //     ->label('Export')

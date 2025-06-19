@@ -2,6 +2,9 @@
 
 namespace App\Filament\Suser\Resources\Kecamatans\Schemas;
 
+use App\Filament\Schemas\Forms\DescriptionInput;
+use App\Filament\Schemas\Forms\NameInput;
+use App\Filament\Schemas\Forms\StatusInput;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use Filament\Forms\Components\Radio;
@@ -27,9 +30,7 @@ class KecamatanForm
                         Grid::make(4)
                             ->schema([
 
-                                TextInput::make('name')
-                                    ->label('Name')
-                                    ->required()
+                                NameInput::make()
                                     ->unique(Kecamatan::class, ignoreRecord: true),
 
                             ]),
@@ -37,9 +38,7 @@ class KecamatanForm
                         Grid::make(4)
                             ->schema([
 
-                                TextInput::make('description')
-                                    ->label('Description')
-                                    ->required(),
+                                DescriptionInput::make(),
                             ]),
 
                     ])
@@ -69,14 +68,10 @@ class KecamatanForm
                         Grid::make(4)
                             ->schema([
 
-                                Radio::make('is_active')
-                                    ->label('Active?')
-                                    ->boolean()
-                                    ->inline()
-                                    ->default(true),
+                                StatusInput::make(),
 
                             ]),
-                    ])->collapsible()
+                    ])
                     ->compact(),
             ])->columns(1);
     }

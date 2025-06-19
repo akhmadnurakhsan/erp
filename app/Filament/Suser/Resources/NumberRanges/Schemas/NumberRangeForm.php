@@ -2,6 +2,9 @@
 
 namespace App\Filament\Suser\Resources\NumberRanges\Schemas;
 
+use App\Filament\Schemas\Forms\DescriptionInput;
+use App\Filament\Schemas\Forms\NameInput;
+use App\Filament\Schemas\Forms\StatusInput;
 use App\Filament\Suser\Resources\NrObjects\Tables\NrObjectsTable;
 use App\Models\NrObject;
 use App\Models\NumberRange;
@@ -55,9 +58,7 @@ class NumberRangeForm
                         Grid::make(4)
                             ->schema([
 
-                                TextInput::make('name')
-                                    ->label('Name')
-                                    ->required()
+                                NameInput::make()
                                     ->unique(NumberRange::class, ignoreRecord: true),
 
                             ]),
@@ -65,9 +66,7 @@ class NumberRangeForm
                         Grid::make(4)
                             ->schema([
 
-                                TextInput::make('description')
-                                    ->label('Description')
-                                    ->required(),
+                                DescriptionInput::make(),
                             ]),
 
                     ])
@@ -105,7 +104,7 @@ class NumberRangeForm
 
                                 TextInput::make('number')
                                     ->label('Number Range')
-                                    ->regex('/[^0-9]/') // Allow only numbers
+                                    ->regex('/[^0-9]*$/') // Allow only numbers
                                     ->required()
                                     ->maxLength(10),
 
@@ -117,7 +116,7 @@ class NumberRangeForm
 
                                 TextInput::make('current_number')
                                     ->label('Current Number')
-                                    ->regex('/[^0-9]/')
+                                    ->regex('/[^0-9]*$/')
                                     ->maxLength(10),
 
                             ]),
@@ -133,11 +132,7 @@ class NumberRangeForm
                         Grid::make(4)
                             ->schema([
 
-                                Radio::make('is_active')
-                                    ->label('Active?')
-                                    ->boolean()
-                                    ->inline()
-                                    ->default(true),
+                                StatusInput::make(),
 
                             ]),
                     ])->collapsible()

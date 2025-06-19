@@ -2,6 +2,9 @@
 
 namespace App\Filament\Suser\Resources\Users\Tables;
 
+use App\Filament\Schemas\Tables\Filters\BasicQueryBuilderFilters;
+use App\Filament\Schemas\Tables\recordActions\BasicActionGrouprecordActions;
+use App\Filament\Schemas\Tables\toolbarActions\BasicBulkActionGrouptoolbarActions;
 use App\Models\PanelRole;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
@@ -140,13 +143,11 @@ class UsersTable
 
                 TrashedFilter::make(),
 
+                BasicQueryBuilderFilters::make(),
+
                 QueryBuilder::make()
                     ->constraintPickerColumns(1)
                     ->constraints([
-
-                        TextConstraint::make('name')
-                            ->label('Name')
-                            ->nullable(),
 
                         TextConstraint::make('username')
                             ->label('Username')
@@ -154,56 +155,21 @@ class UsersTable
 
                         SelectConstraint::make('panel_role_id')
                             ->label('Panel Role')
-                            ->options(PanelRole::all()->pluck('panel_role', 'id'))
-                            ->multiple()
-                            ->nullable(),
+                            ->options(PanelRole::all()->pluck('description', 'id'))
+                            ->multiple(),
 
                         TextConstraint::make('email')
                             ->label('Email')
                             ->nullable(),
 
-
-                        BooleanConstraint::make('is_active')
-                            ->label('Status')
-                            ->icon(false)
-                            ->nullable(),
-
-                        TextConstraint::make('created_by')
-                            ->label('Created by')
-                            ->icon(false)
-                            ->nullable(),
-
-                        TextConstraint::make('updated_by')
-                            ->label('Updated by')
-                            ->icon(false)
-                            ->nullable(),
-
-                        DateConstraint::make('created_at')
-                            ->icon(false)
-                            ->nullable(),
-
-                        DateConstraint::make('updated_at')
-                            ->icon(false)
-                            ->nullable(),
-
                     ]),
             ])
             ->recordActions([
-                ActionGroup::make([
-                    ViewAction::make(),
-                    EditAction::make(),
-                    DeleteAction::make(),
-                    ForceDeleteAction::make(),
-                    RestoreAction::make(),
-                ]),
+                BasicActionGrouprecordActions::make(),
 
             ])
             ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                    ForceDeleteBulkAction::make(),
-                    RestoreBulkAction::make(),
-                ]),
+                BasicBulkActionGrouptoolbarActions::make(),
 
                 // ExportBulkAction::make()
                 //     ->label('Export')
