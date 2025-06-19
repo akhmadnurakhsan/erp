@@ -11,6 +11,16 @@ class StatusStatusGroup extends Model
     use SoftDeletes;
     use LogTrait;
 
+    public function statusGroups()
+    {
+        return $this->belongsToMany(StatusGroup::class);
+    }
+
+    public function statuses()
+    {
+        return $this->belongsToMany(Status::class);
+    }
+
     public function statusGroup()
     {
         return $this->belongsTo(StatusGroup::class);

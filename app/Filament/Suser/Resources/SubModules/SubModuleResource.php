@@ -17,6 +17,7 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use UnitEnum;
 
 class SubModuleResource extends Resource
 {
@@ -24,15 +25,31 @@ class SubModuleResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
+    protected static ?string $modelLabel = 'Sub Module';
+
+    protected static ?string $pluralModelLabel = 'Sub Module';
+
+    protected static ?string $navigationLabel = 'Sub Module';
+
+    // protected static ?int $navigationSort = 990000020;
+
+    // protected static ?string $cluster = AdminClustersUser::class;
+
+    protected static string|UnitEnum|null $navigationGroup = 'Configuration';
+
+    // protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
+
+    protected static ?string $recordTitleAttribute = 'record_title';
+
     public static function form(Schema $schema): Schema
     {
         return SubModuleForm::configure($schema);
     }
 
-    public static function infolist(Schema $schema): Schema
-    {
-        return SubModuleInfolist::configure($schema);
-    }
+    // public static function infolist(Schema $schema): Schema
+    // {
+    //     return SubModuleInfolist::configure($schema);
+    // }
 
     public static function table(Table $table): Table
     {

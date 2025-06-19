@@ -2,11 +2,10 @@
 
 namespace App\Filament\Suser\Resources\NrObjects\Schemas;
 
+use App\Filament\Schemas\Forms\DescriptionInput;
+use App\Filament\Schemas\Forms\NameInput;
+use App\Filament\Schemas\Forms\StatusInput;
 use App\Models\NrObject;
-use Filament\Forms\Components\Radio;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -24,9 +23,7 @@ class NrObjectForm
                         Grid::make(4)
                             ->schema([
 
-                                TextInput::make('name')
-                                    ->label('Name')
-                                    ->required()
+                                NameInput::make()
                                     ->unique(NrObject::class, ignoreRecord: true),
 
                             ]),
@@ -34,9 +31,7 @@ class NrObjectForm
                         Grid::make(4)
                             ->schema([
 
-                                TextInput::make('description')
-                                    ->label('Description')
-                                    ->required(),
+                                DescriptionInput::make(),
                             ]),
 
                     ])
@@ -48,14 +43,10 @@ class NrObjectForm
                         Grid::make(4)
                             ->schema([
 
-                                Radio::make('is_active')
-                                    ->label('Active?')
-                                    ->boolean()
-                                    ->inline()
-                                    ->default(true),
+                                StatusInput::make(),
 
                             ]),
-                    ])->collapsible()
+                    ])
                     ->compact(),
             ])->columns(1);
     }
