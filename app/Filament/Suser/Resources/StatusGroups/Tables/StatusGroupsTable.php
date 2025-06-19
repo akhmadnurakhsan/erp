@@ -2,14 +2,12 @@
 
 namespace App\Filament\Suser\Resources\StatusGroups\Tables;
 
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
-use Filament\Actions\ForceDeleteBulkAction;
-use Filament\Actions\RestoreBulkAction;
-use Filament\Actions\ViewAction;
-use Filament\Tables\Columns\IconColumn;
-use Filament\Tables\Columns\TextColumn;
+use App\Filament\Schemas\Tables\Columns\LogsColumnGroup;
+use App\Filament\Schemas\Tables\Columns\NameColumnGroup;
+use App\Filament\Schemas\Tables\Columns\StatusColumnGroup;
+use App\Filament\Schemas\Tables\Filters\BasicQueryBuilderFilters;
+use App\Filament\Schemas\Tables\recordActions\BasicActionGrouprecordActions;
+use App\Filament\Schemas\Tables\toolbarActions\BasicBulkActionGrouptoolbarActions;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 
@@ -18,47 +16,32 @@ class StatusGroupsTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->searchOnBlur()
             ->columns([
-                TextColumn::make('name')
-                    ->searchable(),
-                TextColumn::make('ulid')
-                    ->searchable(),
-                TextColumn::make('record_title')
-                    ->searchable(),
-                TextColumn::make('con')
-                    ->searchable(),
-                IconColumn::make('is_active')
-                    ->boolean(),
-                TextColumn::make('created_by')
-                    ->searchable(),
-                TextColumn::make('updated_by')
-                    ->searchable(),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+
+                NameColumnGroup::make(),
+
+                StatusColumnGroup::make(),
+
+                LogsColumnGroup::make(),
             ])
             ->filters([
+
                 TrashedFilter::make(),
+
+                BasicQueryBuilderFilters::make(),
             ])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
+                BasicActionGrouprecordActions::make(),
+
             ])
             ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                    ForceDeleteBulkAction::make(),
-                    RestoreBulkAction::make(),
-                ]),
+                BasicBulkActionGrouptoolbarActions::make(),
+
+                // ExportBulkAction::make()
+                //     ->label('Export')
+                //     ->exporter(UserExporter::class),
+
             ]);
     }
 }

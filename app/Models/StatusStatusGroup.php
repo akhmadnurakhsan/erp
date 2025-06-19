@@ -11,6 +11,8 @@ class StatusStatusGroup extends Model
     use SoftDeletes;
     use LogTrait;
 
+    protected $table = 'status_status_groups';
+
     public function statusGroups()
     {
         return $this->belongsToMany(StatusGroup::class);

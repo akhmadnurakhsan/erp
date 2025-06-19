@@ -20,4 +20,9 @@ class StatusGroup extends Model
     {
         return $this->hasMany(DocumentType::class);
     }
+
+    public function statuses()
+    {
+        return $this->belongsToMany(Status::class);
+    }
 }

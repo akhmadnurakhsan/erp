@@ -13,6 +13,7 @@ class StatusColumnGroup
 
             CheckboxColumn::make('is_active')
                 ->label('Status')
+                ->searchable(isIndividual: true, isGlobal: false)
                 ->alignCenter()
                 ->sortable(),
 
